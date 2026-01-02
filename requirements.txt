@@ -1,0 +1,9 @@
+# Python dependencies for TTV engine backend
+flask
+flask-cors
+torch
+diffusers
+opencv-python
+accelerate
+transformers
+imageio
