@@ -15,6 +15,8 @@ os.makedirs(VIDEO_DIR, exist_ok=True)
 def generate_video_endpoint():
     data = request.get_json()
     prompt = data.get('prompt')
+    num_frames = data.get('num_frames', 360)  # Default to 360 for educational videos
+    fps = data.get('fps', 24)
     if not prompt:
         return jsonify({"error": "Prompt is required"}), 400
 
@@ -24,7 +26,7 @@ def generate_video_endpoint():
 
     try:
         # Generate video
-        generate_video(prompt, output_path, num_frames=16, fps=24)  # ~0.7 seconds for test
+        generate_video(prompt, output_path, num_frames=num_frames, fps=fps)
         return jsonify({"video_path": output_path}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
