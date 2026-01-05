@@ -55,8 +55,12 @@ def generate_educational_video(prompt: str) -> str:
                         text_clips.append(txt_clip)
                 video = CompositeVideoClip([background] + text_clips)
 
-            # Write the video file
+            # Write the video file with fixed duration
             video.write_videofile(video_path, fps=24, codec='libx264', audio=False, verbose=False, logger=None)
+
+            # Verify video is not empty
+            assert os.path.exists(video_path)
+            assert os.path.getsize(video_path) > 5000
 
             # Return the full URL
             return f"http://localhost:8000/output/final_videos/{video_filename}"
@@ -71,10 +75,14 @@ def generate_educational_video(prompt: str) -> str:
     return sample_videos[video_index]
 
 def create_solar_system_video():
-    from moviepy import ColorClip, TextClip, CompositeVideoClip
+    # Educational animation, solar system, sun at center, planets orbiting smoothly, single continuous shot, stable camera, flat clean illustration style, no flicker, no jump cuts, 15 seconds duration
+    from moviepy.editor import TextClip, ColorClip, CompositeVideoClip
     import numpy as np
 
-    duration = 15
+    FPS = 24
+    DURATION_SECONDS = 15
+    TOTAL_FRAMES = FPS * DURATION_SECONDS  # 360
+    duration = DURATION_SECONDS
     size = (1280, 720)
     background = ColorClip(size=size, color=(0, 0, 0), duration=duration)
 
